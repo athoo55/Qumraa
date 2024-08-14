@@ -1,49 +1,47 @@
 import React from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import herosection from '../components/assets/herosection.jpg';
 import { Link } from 'react-router-dom';
+import { FaStar } from "react-icons/fa";
+import herosection from '../components/assets/herosection.jpg';
 import camera from '../components/assets/camera.jpg';
 import ail from '../components/assets/ail.jpg';
 import ahmed from '../components/assets/ahmed.jpg';
 import ibrahim from '../components/assets/ibrahim.jpeg';
 import aya from '../components/assets/aya.jpg';
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-import { FaStar } from "react-icons/fa";
 import niveen from '../components/assets/niveen.jpg';
 
 const Home = () => {
   const photographers = [
     {
       id: '1',
-      name: 'Aya',
+      name: 'Aya Hussain',
       photo: aya,
-      description: 'Aayana is a 23-year-old Indian photographer, known for her bold and unconventional style. She loves capturing the beauty of nature and capturing the essence of the human spirit.'
+      rating: 4
     },
     {
       id: '2',
-      name: 'Ali',
+      name: 'Ali Ahmed',
       photo: ail,
-      description: 'Ali is a 25-year-old Indian photographer, known for his unique and creative style. He loves capturing the beauty of nature and capturing the essence of the human spirit.'
+      rating: 4.5
     },
     {
       id: '3',
-      name: 'Noor',
+      name: 'Noor Mohammed',
       photo: ahmed,
-      description: 'Noor is a 28-year-old Indian photographer, known for his unique and creative style. He loves capturing the beauty of nature and capturing the essence of the human spirit.'
+      rating: 4
     },
     {
       id: '4',
-      name: 'Niveen',
+      name: 'Niveen Khaled',
       photo: niveen,
-      description: 'Niveen is a 28-year-old Indian photographer, known for his unique and creative style. He loves capturing the beauty of nature and capturing the essence of the human spirit.'
+      rating: 5
     },
     {
       id: '5',
-      name: 'Ibrahim',
+      name: 'Ibrahim Saleh',
       photo: ibrahim,
-      description: 'Ibrahim is a 28-year-old Indian photographer, known for his unique and creative style. He loves capturing the beauty of nature and capturing the essence of the human spirit.'
+      rating: 4.5
     }
   ];
 
@@ -95,28 +93,31 @@ const Home = () => {
             {photographers.map((photog) => (
               <div key={photog.id} className='rounded-2xl bg-white dark:bg-gray-800 hover:bg-yellow-300 hover:text-black relative shadow-xl duration-1000 group-max-w[300px]'>
                 <div className='h-[100px]'>
-                  <img src={photog.photo} alt="" className='h-[150px] w-[150px] object-cover shadow-lg border-4 border-yellow-300 shadow-yellow-300 block mx-auto rounded-full transform -translate-y-14 group-hover:scale-105 duration-300' />
+                  <img src={photog.photo} alt={photog.name} className='h-[150px] w-[150px] object-cover shadow-lg border-4 border-yellow-300 shadow-yellow-300 block mx-auto rounded-full transform -translate-y-14 group-hover:scale-105 duration-300' />
                 </div>
                 <div className='p-4 text-center m-4'>
                   <h1 className='text-xl font-bold'>{photog.name}</h1>
                   <div className='w-full flex items-center justify-center'>
-                    <FaStar className='text-yellow-300' />
-                    <FaStar className='text-yellow-300' />
-                    <FaStar className='text-yellow-300' />
-                    <FaStar className='text-yellow-300' />
+                    {[...Array(Math.floor(photog.rating))].map((_, i) => (
+                      <FaStar key={i} className='text-yellow-300' />
+                    ))}
+                    {photog.rating % 1 !== 0 && (
+                      <FaStar className='text-yellow-300 half' />
+                    )}
                   </div>
-                  <p className='text-gray-500 group-hover:text-white duration-300 text-sm line-clamp-2'>{photog.description}</p>
-                  <button className='px-4 opacity-100 mt-4 md:mt-7 ml-4 py-3 text-center rounded-full border-4 border-yellow-500 ease-in duration-300'>
-                    See More
-                  </button>
+                  <Link to='photographers'>
+                    <button className='px-4 opacity-100 mt-4 md:mt-7 ml-4 py-3 text-center rounded-full border-4 border-yellow-500 ease-in duration-300'>
+                      See More
+                    </button>
+                  </Link>
                 </div>
               </div>
             ))}
-            <div className='flex justify-center w-full'>
-              <Link to='photographers' className="font-bold text-yellow-600 opacity-100 mt-4 md:mt-7 ml-4 px-8 py-3 text-center rounded-full border-4 border-yellow-500 ease-in duration-300">
-                View All Photographers
-              </Link>
-            </div>
+          </div>
+          <div className='flex justify-center w-full mt-10'>
+            <Link to='photographers' className="font-bold text-yellow-600 opacity-100 mt-4 md:mt-7 ml-4 px-8 py-3 text-center rounded-full border-4 border-yellow-500 ease-in duration-300">
+              View All Photographers
+            </Link>
           </div>
         </div>
       </section>
