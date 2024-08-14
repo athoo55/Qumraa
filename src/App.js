@@ -8,6 +8,7 @@ import Category from './pages/Category';
 import Photographers from './pages/Photographers';
 import PhotographerDetails from './pages/PhotographersDetils';
 import Booking from './components/Booking';
+import axios from 'axios';
 // import Header from './components/Header';
 // import Footer from './components/Footer';
 // import Detils from './pages/Detils';

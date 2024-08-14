@@ -32,7 +32,7 @@ const Photographers = () => {
   return (
     <div>
       <Header />
-      
+
       <div className="mt-14 mb-12">
         <div className="container mx-auto px-4">
           <div className="text-center mb-10 py-4">
@@ -41,11 +41,11 @@ const Photographers = () => {
               <input
                 type='text'
                 placeholder='Search by name'
-                className='border-4 border-gray-300 p-2 rounded-lg w-full md:w-3/4 lg:w-1/2 focus:outline-none focus:ring-2 focus:ring-yellow-300'
+                className='border-4 border-yellow-300 p-2 rounded-lg w-full md:w-3/4 lg:w-1/2 focus:outline-none focus:ring-2 focus:ring-yellow-300'
                 value={searchQuery}
                 onChange={handleSearch}
               />
-              <FaSearch className="text-2xl text-yellow-400 cursor-pointer" /> {/* تكبير حجم الأيقونة */}
+              <FaSearch className="text-2xl text-yellow-400 cursor-pointer" />
             </div>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
@@ -83,16 +83,20 @@ const Photographers = () => {
                 <div className='text-center'>
                   <h3 className="text-xl font-bold mb-2">{photographer.title}</h3>
                   <div className="flex justify-center items-center m-2">
-                    {[...Array(Math.floor(photographer.rating))].map((_, i) => (
-                      <FaStar key={i} className="text-yellow-500 " />
-                    ))}
-                    <span className="ml-2">{photographer.rating}</span>
-                    {photographer.price !== undefined && (
-                      <p className="text-lg font-bold ml-10">${photographer.price}</p>
+                    {photographer.rating && photographer.rating > 0 ? (
+                      <>
+                        {[...Array(Math.floor(photographer.rating))].map((_, i) => (
+                          <FaStar key={i} className="text-yellow-500 " />
+                        ))}
+                        <span className="ml-2">{photographer.rating}</span>
+                      </>
+                    ) : (
+                      <span>No rating available</span>
                     )}
                   </div>
+                  <p className="text-lg font-bold">${photographer.price}</p>
                   <button
-                    className='bg-yellow-300 text-white py-2 px-4 rounded-lg'
+                    className='bg-yellow-300 text-white py-2 px-4 rounded-lg mt-4'
                     onClick={() => handleViewDetails(photographer.id)}
                   >
                     View Details

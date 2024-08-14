@@ -26,52 +26,62 @@ const Login = ({ toggleLogin }) => {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-      <div className={`p-8 rounded-lg shadow-lg ${pageSpecificStyles()}`}>
-        <h2 className="text-2xl mb-4">Login</h2>
+      <div className={`w-full max-w-lg p-10 rounded-xl shadow-2xl ${pageSpecificStyles()} transition-all duration-300`}>
+        <h2 className="text-3xl font-bold mb-6">Login</h2>
         <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label className="block mb-2">Photo URL:</label>
+          <div className="mb-6">
+            <label className="block mb-2 font-medium">Photo URL:</label>
             <input
               type="text"
               value={photo}
               onChange={(e) => setPhoto(e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded"
+              className="w-full p-3 border-2 border-yellow-400 rounded-lg"
               required
             />
           </div>
-          <div className="mb-4">
-            <label className="block mb-2">Name:</label>
+          <div className="mb-6">
+            <label className="block mb-2 font-medium">Name:</label>
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded"
+              className="w-full p-3 border-2 border-yellow-400 rounded-lg"
               required
             />
           </div>
-          <div className="mb-4">
-            <label className="block mb-2">Age:</label>
+          <div className="mb-6">
+            <label className="block mb-2 font-medium">Age:</label>
             <input
               type="number"
               value={age}
               onChange={(e) => setAge(e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded"
+              className="w-full p-3 border-2 border-yellow-400 rounded-lg"
               required
             />
           </div>
-          <div className="mb-4">
-            <label className="block mb-2">Price:</label>
+          <div className="mb-6">
+            <label className="block mb-2 font-medium">Price:</label>
             <input
               type="number"
               value={price}
               onChange={(e) => setPrice(e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded"
+              className="w-full p-3 border-2 border-yellow-400 rounded-lg"
               required
             />
           </div>
-          <button type="submit" className="bg-yellow-500 text-white py-2 px-4 rounded">Login</button>
+          <button
+            type="submit"
+            className="w-full bg-yellow-400 hover:bg-yellow-600 text-white py-3 px-4 rounded-lg font-semibold text-lg"
+          >
+            Login
+          </button>
         </form>
-        <button onClick={toggleLogin} className="mt-4 text-gray-500">Close</button>
+        <button
+          onClick={toggleLogin}
+          className="mt-6 text-gray-500 hover:text-gray-700 transition-colors duration-200"
+        >
+          Close
+        </button>
       </div>
     </div>
   );

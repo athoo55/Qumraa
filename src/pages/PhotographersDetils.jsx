@@ -39,25 +39,27 @@ const PhotographerDetails = () => {
     <div>
       <Header />
       <div className="container mx-auto px-4 mt-10 mb-8">
-        <div className="bg-white p-6 rounded-lg shadow-lg md:p-8">
-          {/* تحقق من وجود workImages */}
-          {photographer.workImages && photographer.workImages.length > 0 ? (
-            <Slider {...sliderSettings} className="mb-6 md:mb-8">
-              {photographer.workImages.map((image, index) => (
-                <div key={index} className="flex justify-center">
-                  <img
-                    src={image}
-                    alt={`Photographer Work ${index + 1}`}
-                    className="w-full h-60 object-cover rounded-lg shadow-md md:w-[550px] md:h-96 border-2 shadow-yellow-300 border-yellow-300"
-                  />
-                </div>
-              ))}
-            </Slider>
-          ) : (
-            <div className="text-center">No images available</div>
-          )}
+        <div className="bg-white p-6 rounded-lg shadow-lg md:p-8 flex flex-col items-center">
+          
+          <div className="w-full max-w-3xl mb-6 md:mb-8">
+            {photographer.workImages && photographer.workImages.length > 0 ? (
+              <Slider {...sliderSettings}>
+                {photographer.workImages.map((image, index) => (
+                  <div key={index} className="flex justify-center">
+                    <img
+                      src={image}
+                      alt={`Photographer Work ${index + 1}`}
+                      className="w-full h-60 object-cover rounded-lg shadow-md md:w-[700px] md:h-96 border-2 shadow-yellow-300 border-yellow-300"
+                    />
+                  </div>
+                ))}
+              </Slider>
+            ) : (
+              <div className="text-center">No images available</div>
+            )}
+          </div>
 
-          <div className="flex flex-col md:flex-row items-center mb-6">
+          <div className="flex flex-col md:flex-row items-center mb-6 w-full max-w-3xl">
             <img
               src={photographer.photo}
               alt={photographer.title}
@@ -75,12 +77,12 @@ const PhotographerDetails = () => {
             </div>
           </div>
 
-          <p className="text-sm md:text-base mb-8">{photographer.description}</p>
+          <p className="text-sm md:text-base mb-8 max-w-3xl">{photographer.description}</p>
 
           <h3 className="text-xl font-semibold mb-4 md:text-2xl">Available Locations</h3>
-          {/* تحقق من وجود places */}
+          
           {photographer.places && photographer.places.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8 md:grid-cols-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8 md:grid-cols-4 max-w-3xl">
               {photographer.places.map((place, index) => (
                 <div key={index} className="bg-gray-100 p-4 rounded-lg shadow-md">
                   <h3 className="text-sm font-semibold mb-2 md:text-lg">{place.name}</h3>
@@ -92,10 +94,10 @@ const PhotographerDetails = () => {
             <div className="text-center">No locations available</div>
           )}
 
-          <div className="text-center mb-8">
+          <div className="text-center mb-8 w-full max-w-3xl">
             <button
               onClick={handleBookNow}
-              className="bg-yellow-300 text-white py-2 px-4 rounded-lg text-sm md:text-base"
+              className="bg-yellow-300 text-white py-4 px-12 rounded-lg text-lg md:text-xl"
             >
               Book Now
             </button>

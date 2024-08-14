@@ -12,6 +12,7 @@ const Booking = () => {
   const [email, setEmail] = useState('');
   const [date, setDate] = useState('');
   const [message, setMessage] = useState('');
+  const [phone, setPhone] = useState({});
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -38,7 +39,17 @@ const Booking = () => {
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded text-sm md:text-base lg:text-lg"
+                className="w-full p-2 border-4 border-yellow-300 rounded text-sm md:text-base lg:text-lg"
+                required
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block text-gray-700 mb-2 text-sm md:text-base lg:text-lg">Your Phone Number:</label>
+              <input
+                type="number"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                className="w-full p-2 border-4 border-yellow-300 rounded text-sm md:text-base lg:text-lg"
                 required
               />
             </div>
@@ -48,7 +59,7 @@ const Booking = () => {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded text-sm md:text-base lg:text-lg"
+                className="w-full p-2 border-4 border-yellow-300 rounded text-sm md:text-base lg:text-lg"
                 required
               />
             </div>
@@ -58,7 +69,7 @@ const Booking = () => {
                 type="date"
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded text-sm md:text-base lg:text-lg"
+                className="w-full p-2 border-4 border-yellow-300 rounded text-sm md:text-base lg:text-lg"
                 required
               />
             </div>
@@ -67,7 +78,7 @@ const Booking = () => {
               <textarea
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded text-sm md:text-base lg:text-lg"
+                className="w-full p-2 border-4 border-yellow-300 rounded text-sm md:text-base lg:text-lg"
                 rows="4"
                 required
               ></textarea>
