@@ -3,26 +3,28 @@ import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import { FaSearch, FaStar } from 'react-icons/fa';
 import Footer from '../components/Footer';
-import data from '../data/photographer';
+import axios from 'axios';
 
 const Photographers = () => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [loggedInPhotographer, setLoggedInPhotographer] = useState(null);
+  const [photographers, setPhotographers] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const storedUserData = localStorage.getItem('loggedInPhotographer');
-    if (storedUserData) {
-      setLoggedInPhotographer(JSON.parse(storedUserData));
-    }
+    axios.get('https://x8ki-letl-twmt.n7.xano.io/api:RGlZFTKX/photographers') // رابط API الخاص بك
+      .then(response => {
+        console.log(response.data);
+        setPhotographers(response.data);
+      })
+      .catch(error => console.error('Error fetching photographers:', error));
   }, []);
 
   const handleSearch = (event) => {
     setSearchQuery(event.target.value);
   };
 
-  const filteredPhotographers = data.filter(photographer =>
-    photographer.title && photographer.title.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredPhotographers = photographers.filter(photographer =>
+    photographer.name && photographer.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const handleViewDetails = (photographerId) => {
@@ -32,7 +34,6 @@ const Photographers = () => {
   return (
     <div>
       <Header />
-
       <div className="mt-14 mb-12">
         <div className="container mx-auto px-4">
           <div className="text-center mb-10 py-4">
@@ -49,44 +50,22 @@ const Photographers = () => {
             </div>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
-            {loggedInPhotographer && (
-              <div className="bg-white rounded-2xl shadow-xl p-6 hover:bg-yellow-300 hover:text-black transition duration-300">
-                <div className='flex justify-center mb-4'>
-                  <img
-                    src={loggedInPhotographer.photo}
-                    alt={loggedInPhotographer.name}
-                    className="h-40 w-40 object-cover shadow-lg border-4 border-yellow-300 rounded-full transform transition-transform duration-300 hover:scale-105"
-                  />
-                </div>
-                <div className='text-center'>
-                  <h3 className="text-xl font-bold mb-2">{loggedInPhotographer.name}</h3>
-                  <p>Age: {loggedInPhotographer.age}</p>
-                  <p className="text-lg font-bold mb-4">${loggedInPhotographer.price}</p>
-                  <button
-                    className='bg-yellow-300 text-white py-2 px-4 rounded-lg'
-                    onClick={() => handleViewDetails(loggedInPhotographer.id)}
-                  >
-                    View Details
-                  </button>
-                </div>
-              </div>
-            )}
             {filteredPhotographers.map(photographer => (
               <div key={photographer.id} className="bg-white rounded-2xl shadow-xl p-6 hover:bg-yellow-300 hover:text-black transition duration-300">
                 <div className='flex justify-center mb-4'>
                   <img
-                    src={photographer.photo}
-                    alt={photographer.title}
+                    src={photographer.profile_picture.url}
+                    alt={photographer.name}
                     className="h-40 w-40 object-cover shadow-lg border-4 border-yellow-300 rounded-full transform transition-transform duration-300 hover:scale-105"
                   />
                 </div>
                 <div className='text-center'>
-                  <h3 className="text-xl font-bold mb-2">{photographer.title}</h3>
+                  <h3 className="text-xl font-bold mb-2">{photographer.name}</h3>
                   <div className="flex justify-center items-center m-2">
                     {photographer.rating && photographer.rating > 0 ? (
                       <>
                         {[...Array(Math.floor(photographer.rating))].map((_, i) => (
-                          <FaStar key={i} className="text-yellow-500 " />
+                          <FaStar key={i} className="text-yellow-500" />
                         ))}
                         <span className="ml-2">{photographer.rating}</span>
                       </>
@@ -94,7 +73,7 @@ const Photographers = () => {
                       <span>No rating available</span>
                     )}
                   </div>
-                  <p className="text-lg font-bold">${photographer.price}</p>
+                  <p className="text-lg font-bold">${photographer.rate}</p>
                   <button
                     className='bg-yellow-300 text-white py-2 px-4 rounded-lg mt-4'
                     onClick={() => handleViewDetails(photographer.id)}

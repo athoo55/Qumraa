@@ -3,14 +3,11 @@ import { Link } from 'react-router-dom';
 import { RxHamburgerMenu } from "react-icons/rx";
 import { FaTimes } from "react-icons/fa";
 import logo from './assets/logo.png';
-import Login from '../components/Login';
 
 function Header() {
   const [nav, setNav] = useState(false);
-  const [showLogin, setShowLogin] = useState(false);
 
   const handleClick = () => setNav(!nav);
-  const toggleLogin = () => setShowLogin(!showLogin);
 
   return (
     <div className='flex items-center justify-between py-2 bg-yellow-300 shadow-lg'>
@@ -77,10 +74,9 @@ function Header() {
           </li>
         </ul>
       </div>
-      <button onClick={toggleLogin} className='text-base md:text-lg font-serif m-3 md:m-5 hover:text-gray-900 transition-colors'>
+      <Link to="/login" className='text-base md:text-lg font-serif m-3 md:m-5 hover:text-gray-900 transition-colors'>
         Login
-      </button>
-      {showLogin && <Login toggleLogin={toggleLogin} />}
+      </Link>
     </div>
   );
 }

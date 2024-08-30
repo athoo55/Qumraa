@@ -1,21 +1,47 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { FaStar } from 'react-icons/fa';
 import Slider from 'react-slick';
-import data from '../data/photographer';
+import axios from 'axios';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import Photographers from './Photographers';
 
 const PhotographerDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const photographer = data.find(p => p.id === id);
+  const [photographer, setPhotographer] = useState(null);
+  const [error, setError] = useState(null);
 
-  if (!photographer) {
-    return <div>Photographer not found</div>;
-  }
+  useEffect(() => {
+    const fetchPhotographerDetails = async () => {
+      try {
+        // جلب البيانات الأساسية للمصور
+        const photographerResponse = await axios.get(`https://x8ki-letl-twmt.n7.xano.io/api:RGlZFTKX/photographers/${id}`);
+        
+        // جلب صور عمل المصور من جدول الصور بناءً على photographers_id
+        const photosResponse = await axios.get(`https://x8ki-letl-twmt.n7.xano.io/api:RGlZFTKX/photos_table`, {
+          params: { photographers_id: id }
+        });
+        console.log(photosResponse.data);
+        
+        // جمع البيانات في كائن واحد
+        const photographerData = {
+          ...photographerResponse.data,
+          photos: photosResponse.data,
+        };
+        
+        setPhotographer(photographerData);
+      } catch (error) {
+        setError('Error fetching photographer details');
+        console.error(error);
+      }
+    };
+
+    fetchPhotographerDetails();
+  }, [id]);
 
   const sliderSettings = {
     dots: true,
@@ -35,19 +61,45 @@ const PhotographerDetails = () => {
     navigate(`/book/${id}`);
   };
 
+  if (error) {
+    return (
+      <div>
+        <Header />
+        <div className="container mx-auto px-4 mt-10 mb-8 text-center">
+          <p className="text-red-500 text-lg">Error: {error}</p>
+          <button className="bg-yellow-300 text-white py-2 px-6 rounded-lg mt-4" onClick={() => navigate('/')}>
+            Go Back to Home
+          </button>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (!photographer) {
+    return (
+      <div>
+        <Header />
+        <div className="container mx-auto px-4 mt-10 mb-8 text-center">
+          <p>Loading...</p>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
   return (
     <div>
       <Header />
       <div className="container mx-auto px-4 mt-10 mb-8">
         <div className="bg-white p-6 rounded-lg shadow-lg md:p-8 flex flex-col items-center">
-          
           <div className="w-full max-w-3xl mb-6 md:mb-8">
-            {photographer.workImages && photographer.workImages.length > 0 ? (
+            {Array.isArray(photographer.photos) && photographer.photos.length > 0 ? (
               <Slider {...sliderSettings}>
-                {photographer.workImages.map((image, index) => (
+                {photographer.photos.map((photo, index) => (
                   <div key={index} className="flex justify-center">
                     <img
-                      src={image}
+                      src={photo.photo.url} // تأكد من أن هذا هو الحقل الصحيح للصور
                       alt={`Photographer Work ${index + 1}`}
                       className="w-full h-60 object-cover rounded-lg shadow-md md:w-[700px] md:h-96 border-2 shadow-yellow-300 border-yellow-300"
                     />
@@ -61,47 +113,45 @@ const PhotographerDetails = () => {
 
           <div className="flex flex-col md:flex-row items-center mb-6 w-full max-w-3xl">
             <img
-              src={photographer.photo}
-              alt={photographer.title}
+               src={photographer.profile_picture.url} // تأكد من أن هذا هو الحقل الصحيح للصورة الشخصية
+              alt={photographer.name}
               className="w-28 h-28 md:w-32 md:h-32 object-cover rounded-full border-4 border-yellow-300"
             />
             <div className="mt-4 md:mt-0 text-center md:text-left md:ml-8">
-              <h2 className="text-2xl font-semibold mb-2 md:text-3xl">{photographer.title}</h2>
-              <div className="flex items-center justify-center md:justify-start mb-2">
-                {[...Array(Math.floor(photographer.rating))].map((_, i) => (
-                  <FaStar key={i} className="text-yellow-500 mr-1" />
-                ))}
-                <span className="ml-2 text-sm md:text-base">{photographer.rating}</span>
+              <h1 className="text-2xl font-bold mb-2">{photographer.name}</h1>
+              <div className="flex justify-center items-center mb-4">
+                {photographer.rating && photographer.rating > 0 ? (
+                  <>
+                    {[...Array(Math.floor(photographer.rating))].map((_, i) => (
+                      <FaStar key={i} className="text-yellow-500" />
+                    ))}
+                    <span className="ml-2">{photographer.rating}</span>
+                  </>
+                ) : (
+                  <span>No rating available</span>
+                )}
               </div>
-              <p className="text-lg font-bold mb-2">Price: ${photographer.price}</p>
+              <p className="text-lg font-semibold mb-2">Session Price: ${photographer.rate}</p>
             </div>
           </div>
-
-          <p className="text-sm md:text-base mb-8 max-w-3xl">{photographer.description}</p>
-
-          <h3 className="text-xl font-semibold mb-4 md:text-2xl">Available Locations</h3>
-          
-          {photographer.places && photographer.places.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8 md:grid-cols-4 max-w-3xl">
-              {photographer.places.map((place, index) => (
-                <div key={index} className="bg-gray-100 p-4 rounded-lg shadow-md">
-                  <h3 className="text-sm font-semibold mb-2 md:text-lg">{place.name}</h3>
-                  <p className="text-xs md:text-sm">{place.description}</p>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="text-center">No locations available</div>
-          )}
-
-          <div className="text-center mb-8 w-full max-w-3xl">
-            <button
-              onClick={handleBookNow}
-              className="bg-yellow-300 text-white py-4 px-12 rounded-lg text-lg md:text-xl"
-            >
-              Book Now
-            </button>
+          {
+                photographer.description
+              }
+          <div className="text-center mb-6">
+            <h2 className="text-xl font-bold mb-2">Where I Work</h2>
+            <ul className="list-disc list-inside mx-4">
+              {
+                photographer.locations
+              }
+            </ul>
           </div>
+
+          <button
+            className="bg-yellow-300 text-white py-2 px-6 rounded-lg"
+            onClick={handleBookNow}
+          >
+            Book Now
+          </button>
         </div>
       </div>
       <Footer />

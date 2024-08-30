@@ -8,6 +8,8 @@ import Category from './pages/Category';
 import Photographers from './pages/Photographers';
 import PhotographerDetails from './pages/PhotographersDetils';
 import Booking from './components/Booking';
+import Login from './components/Login';
+
 import axios from 'axios';
 // import Header from './components/Header';
 // import Footer from './components/Footer';
@@ -30,6 +32,7 @@ function App() {
          <Route path="/photographers" element={<Photographers />} />
          <Route path="/photographer/:id" element={<PhotographerDetails />} />
          <Route path="/book/:id" element={<Booking />} />
+         <Route path="/login" element={<Login />} />
          </Routes>
           </BrowserRouter>
     {/* <BrowserRouter>
